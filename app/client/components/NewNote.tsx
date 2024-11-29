@@ -1,6 +1,6 @@
 import { LinksFunction } from "@remix-run/node"
 import { Form, useActionData, useNavigation } from "@remix-run/react";
-import notesStyles from '~/src/components/NewNote.css?url'
+import notesStyles from '~/client/components/NewNote.css?url'
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: notesStyles }]
 

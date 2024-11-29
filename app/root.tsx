@@ -8,8 +8,8 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 // import "./tailwind.css";
-import styles from "~/src/styles/main.css?url";
-import MainNavigation from './src/components/MainNavigation';
+import styles from "~/client/styles/main.css?url";
+import MainNavigation from '~/client/components/MainNavigation';
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
