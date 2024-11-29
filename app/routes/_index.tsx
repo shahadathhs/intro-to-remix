@@ -1,6 +1,6 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import styles from "~/src/styles/home.css";
+import homeStyles from "~/src/styles/home.css?url";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,7 +13,7 @@ export const links: LinksFunction = () =>
   [
     {
       rel: "stylesheet",
-      href: styles,
+      href: homeStyles,
     },
   ];
 
