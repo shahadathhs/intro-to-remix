@@ -8,22 +8,22 @@ export const links = () => [{ rel: "stylesheet", href: styles }];
 export default function NoteList({ notes }) {
   return (
     <ul id="note-list">
-      {notes.map((note, index) => (
+      {notes?.map((note, index) => (
         <li key={note.id} className="note">
-          <Link to={note.id}>
+          <Link to={note?.id}>
             <article>
               <header>
                 <ul className="note-meta">
                   <li>#{index + 1}</li>
                   <li>
                     <time dateTime={note.id}>
-                      {note.createdAt.toLocaleDateString("en-US")}
+                      {note?.createdAt.toLocaleDateString("en-US")}
                     </time>
                   </li>
                 </ul>
-                <h2>{note.title}</h2>
+                <h2>{note?.title}</h2>
               </header>
-              <p>{note.content}</p>
+              <p>{note?.content}</p>
             </article>
           </Link>
         </li>

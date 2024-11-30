@@ -1,7 +1,7 @@
 import { ActionFunction, redirect } from "@remix-run/node";
 import { getStoredNotes, storeNotes } from "~/server/data/notes";
 import NewNote, { links as newNoteLinks } from "~/client/components/NewNote";
-import { Link, useLoaderData } from "@remix-run/react";
+import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "@remix-run/react";
 import NotesList, { links as notesListLinks } from "~/client/components/NoteList";
 
 export const links = () => [...newNoteLinks(), ...notesListLinks()];
@@ -41,20 +41,35 @@ export const action: ActionFunction = async ({ request }) => {
 export async function loader() {
   const notes = await getStoredNotes();
   if (!notes || notes.length === 0) {
-    return new Response(null, {
+    throw new Response('Could not find any notes.', {
       status: 404,
-      statusText: 'Could not find any notes.',
-    })
+      statusText: 'Notes Not Found',
+    });
   }
-  // throw new Error('Could not fetch notes!');
+  // throw new Error('This is an error');
   return notes;
 }
 
-export const ErrorBoundary = ({ error }: { readonly error: { readonly status: number; readonly statusText: string; readonly data?: { readonly message?: string } } }) => {
+
+export const CatchBoundary = ({ error }: { readonly error: { readonly status: number; readonly statusText: string; readonly data?: { readonly message?: string } } }) => {
+  const message = error.statusText ?? 'Something went wrong!';
+  return (
+    <main>
+      <NewNote />
+      <p className="info-message">{message}</p>
+    </main>
+  );
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError();
+  const response = isRouteErrorResponse(error);
+  if (response) {
+    return <CatchBoundary error={error} />;
+  }
   return (
     <main className='error'>
       <h1>An error occurred!</h1>
-      <p>{error.data?.message ?? 'Something went wrong!'}</p>
       <p>
         Back to <Link to='/'>safety</Link>!
       </p>
