@@ -17,13 +17,7 @@ export default function NoteList({ notes }) {
                   <li>#{index + 1}</li>
                   <li>
                     <time dateTime={note.id}>
-                      {new Date(note.id).toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                      {note.createdAt.toLocaleDateString("en-US")}
                     </time>
                   </li>
                 </ul>

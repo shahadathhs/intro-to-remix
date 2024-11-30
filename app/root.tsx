@@ -1,9 +1,12 @@
 import {
+  isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 
@@ -47,4 +50,56 @@ export function Layout({ children }: { readonly children: React.ReactNode }) {
 }
 export default function App() {
   return <Outlet />;
+}
+
+const CatchBoundary = ({ error }: { readonly error: { readonly status: number; readonly statusText: string; readonly data?: { readonly message?: string } } }) => {
+  return (
+    <html lang='en'>
+      <head>
+        <Meta />
+        <Links />
+        <title>{error.statusText}</title>
+      </head>
+      <body>
+        <main className='error'>
+          <h1>{error.statusText}</h1>
+          <p>{error.data?.message ?? 'Something went wrong!'}</p>
+          <p>
+            Back to <Link to='/'>safety</Link>!
+          </p>
+        </main>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError();
+  const response = isRouteErrorResponse(error);
+
+  if (response) {
+    return <CatchBoundary error={error} />;
+  }
+
+  return (
+    <html lang='en'>
+      <head>
+        <Meta />
+        <Links />
+        <title>An error occurred!</title>
+      </head>
+      <body>
+        <main className='error'>
+          <h1>An error occurred!</h1>
+          <p>
+            Back to <Link to='/'>safety</Link>!
+          </p>
+        </main>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
 }
