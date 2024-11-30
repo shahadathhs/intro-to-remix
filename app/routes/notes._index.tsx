@@ -1,4 +1,4 @@
-import { ActionFunction, redirect } from "@remix-run/node";
+import { ActionFunction, MetaFunction, redirect } from "@remix-run/node";
 import { getStoredNotes, storeNotes } from "~/server/data/notes";
 import NewNote, { links as newNoteLinks } from "~/client/components/NewNote";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "@remix-run/react";
@@ -75,4 +75,13 @@ export const ErrorBoundary = () => {
       </p>
     </main>
   );
+}
+
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'Notes',
+      description: 'Manage your notes with ease.',
+    },
+  ];
 }
